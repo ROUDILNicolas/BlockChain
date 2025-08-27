@@ -8,26 +8,61 @@ namespace BlockChain
 {
     public class Transaction
     {
-        private Compte Creancier;
-        private Compte Debiteur;
-        private decimal Montant;
-        private EStatusType Status;
+        // Déclaration des attributs et accésseurs
+        private static int NbTransaction { get; set; }
+        public int ID { get; private set; }
+        public Compte Creancier { get; private set; }
+        public Compte Debiteur { get; private set; }
+        public decimal Montant { get; private set; }
+        public EStatusType Status { get; private set; }
 
+        /// <summary>
+        /// Constructeur d'une Transaction
+        /// </summary>
+        /// <param name="creancier"></param>
+        /// <param name="debiteur"></param>
+        /// <param name="montant"></param>
         public Transaction(Compte creancier, Compte debiteur, decimal montant)
         {
+            ID = ++NbTransaction;
             Creancier = creancier;
             Debiteur = debiteur;
             Montant = montant;
-            //TODO le status
+            Status = EStatusType.PENDING;
         }
 
+        /// <summary>
+        /// Return true ou false si le débit sur le compte débiteur est possible, puis modifie la valeur de l'attribut Status
+        /// </summary>
+        /// <returns></returns>
         public bool Apply()
         {
-            return new Random().Next(2) == 0;
+            if (Debiteur.DebiterSolde(Montant))
+            {
+                Creancier.CrediterSolde(Montant);
+                Status = EStatusType.DONE;
+                return true;
+            } 
+            Status = EStatusType.FAILED;
+            return false;
+            
         }
 
-        public enum EStatusType
+        /// <summary>
+        /// Affiche les détails de la trasaction en format CSV
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
+            return $"{ID};{Creancier};{Debiteur};{Montant};{Status}";
         }
+    }
+
+    // Définition des valeurs de EStatusType
+    public enum EStatusType
+    {
+        PENDING,
+        FAILED,
+        DONE
     }
 }

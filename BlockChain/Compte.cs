@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlockChain
 {
-    internal class Compte
+    public class Compte
     {
     }
 }

@@ -5,6 +5,8 @@ namespace BlockChain
 {
     public class Block
     {
+        private static int BlockInstanceCompteur = 0;
+
         private int _Id;
         private DateTime _CreateTime;
         private Transaction _Transaction;
@@ -16,9 +18,10 @@ namespace BlockChain
         /// <param name="id">L'id du block</param>
         /// <param name="transaction">La transaction éfféctuer</param>
         /// <param name="hashDuBlockPrecedent">Le hash du block précédent</param>
-        private Block(int id, Transaction transaction, string hashDuBlockPrecedent)
+        public Block(Transaction transaction, string hashDuBlockPrecedent)
         {
-            _Id = id;
+            _Id = BlockInstanceCompteur;
+            BlockInstanceCompteur++;
             _CreateTime = DateTime.Now;
             _Transaction = transaction;
             _HashDuBlockPrecedent = hashDuBlockPrecedent;
@@ -29,7 +32,7 @@ namespace BlockChain
         /// </summary>
         /// <param name="transaction">La transaction éfféctuer</param>
         /// <param name="blockPrecedent">Le block précédent</param>
-        public Block(Transaction transaction, Block blockPrecedent): this (blockPrecedent.Id + 1, transaction, blockPrecedent.HashDuBlockActuelle)
+        public Block(Transaction transaction, Block blockPrecedent): this (transaction, blockPrecedent.HashDuBlockActuelle)
         {
         }
 
@@ -37,7 +40,7 @@ namespace BlockChain
         /// Constructeur pour crée le premier block
         /// </summary>
         /// <param name="transaction"></param>
-        public Block(Transaction transaction) : this(0, transaction, "0")
+        public Block(Transaction transaction) : this(transaction, "0")
         {
             
         }

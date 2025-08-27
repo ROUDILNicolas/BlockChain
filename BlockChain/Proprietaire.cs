@@ -12,11 +12,22 @@ namespace BlockChain
         private string _prenom;
         private DateOnly _dateDeNaissance;
 
+        public string Nom { get { return _nom; } set { _nom = value; } }
+        public string Prenom { get { return _prenom; } set { _prenom = value; } }
+        public DateOnly DateDeNaissance { get { return _dateDeNaissance; } set { _dateDeNaissance = value; } }
         public Proprietaire(string nom, string prenom, DateOnly dateDeNaissance)
         {
             _nom = nom;
             _prenom = prenom;
             _dateDeNaissance = dateDeNaissance;
+        }
+        /// <summary>
+        /// Converti les attributs de l'objet en chaîne de caractères
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{Nom};{Prenom};{DateDeNaissance.Day}/{DateDeNaissance.Month}/{DateDeNaissance.Year}";
         }
     }
 }

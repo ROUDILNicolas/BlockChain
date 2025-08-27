@@ -21,5 +21,13 @@ namespace BlockChain
             _prenom = prenom;
             _dateDeNaissance = dateDeNaissance;
         }
+        /// <summary>
+        /// Converti les attributs de l'objet en chaîne de caractères
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{Nom};{Prenom};{DateDeNaissance.Day}/{DateDeNaissance.Month}/{DateDeNaissance.Year}";
+        }
     }
 }

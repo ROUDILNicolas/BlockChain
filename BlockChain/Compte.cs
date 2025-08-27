@@ -16,31 +16,51 @@ namespace BlockChain
         public string Iban { get { return _iban; } set { _iban = value; } }
         public decimal Solde { get { return _solde; } set {_solde = value; } }
 
-        public Compte(Proprietaire proprietaire, string iban) : this(proprietaire, iban, 0)
-        {
-
-        }
-
-        public Compte(Proprietaire proprietaire, string iban, decimal solde)
+        /// <summary>
+        /// Constructeur de l'objet compte.
+        /// </summary>
+        /// <param name="proprietaire">Le proprietaire du compte</param>
+        /// <param name="iban">L'iban du compte</param>
+        /// <param name="solde">Le solde du compte(par défaut = 0)</param>
+        public Compte(Proprietaire proprietaire, string iban, decimal solde = 0)
         {
             _solde = solde; 
             _proprietaire = proprietaire;
             _iban = iban;
         }
 
-
+        /// <summary>
+        /// Soustrait un montant du solde d'un compte
+        /// uniquement si le Solde est supérieur.
+        /// </summary>
+        /// <param name="montant">le montant a débiter</param>
+        /// <returns></returns>
         public bool DebiterSolde(decimal montant)
         {
-            return new Random().Next(2) == 0;
+            if (this.Solde - montant < 0) 
+            { 
+                return false;
+            }
+            
+            this.Solde = this.Solde - montant;
+            return true;
         }
+        /// <summary>
+        /// Ajoute un montant au Solde du compte
+        /// </summary>
+        /// <param name="amount"></param>
         public void CrediterSolde(decimal amount)
         {
-            //TODO
-        }
+            this.Solde = this.Solde + amount;
 
+        }
+        /// <summary>
+        /// Converti les attributs de l'objet en chaîne de caractères
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return $"{Proprietaire.ToString()};";
+            return $"{Proprietaire.ToString()};{Iban};{Solde.ToString()}";
         }
     }
 }

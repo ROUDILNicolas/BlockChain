@@ -5,6 +5,7 @@ namespace BlockChain
 {
     public class Block
     {
+        //Compteur d'instance pour l'id
         private static int BlockInstanceCompteur = 0;
 
         private int _Id;

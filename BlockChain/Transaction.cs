@@ -19,9 +19,9 @@ namespace BlockChain
         /// <summary>
         /// Constructeur d'une Transaction
         /// </summary>
-        /// <param name="creancier"></param>
-        /// <param name="debiteur"></param>
-        /// <param name="montant"></param>
+        /// <param name="creancier">Compte à crediter</param>
+        /// <param name="debiteur">Compte à débiter</param>
+        /// <param name="montant">Montant de la transaction</param>
         public Transaction(Compte creancier, Compte debiteur, decimal montant)
         {
             ID = ++NbTransaction;

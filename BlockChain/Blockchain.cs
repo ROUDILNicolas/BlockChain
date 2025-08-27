@@ -2,7 +2,7 @@
 {
     public class Blockchain
     {
-        private List<Block> blocks;
+        public List<Block> blocks;
 
         public Blockchain()
         {
@@ -10,12 +10,16 @@
         }
 
         /// <summary>
-        /// Ajoute un block a la liste blocks
+        /// Ajoute un block a la liste blocks Si il n'est pas en PENDING
         /// </summary>
         /// <param name="block"></param>
         public void AjouterBlock(Block block)
         {
-            blocks.Add(block);
+            if (block.Transaction.Status != EStatusType.PENDING)
+            {
+                blocks.Add(block);
+            }
+            
         }
 
         /// <summary>

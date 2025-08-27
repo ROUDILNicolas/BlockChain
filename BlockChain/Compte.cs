@@ -12,16 +12,20 @@ namespace BlockChain
         private string _iban;
         private decimal _solde;
 
-        public Compte(Proprietaire proprietaire, string iban)
+        public Proprietaire Proprietaire { get { return _proprietaire; } set { _proprietaire = value; } }
+        public string Iban { get { return _iban; } set { _iban = value; } }
+        public decimal Solde { get { return _solde; } set {_solde = value; } }
+
+        public Compte(Proprietaire proprietaire, string iban) : this(proprietaire, iban, 0)
         {
-            _proprietaire = proprietaire;
-            _iban = iban;
-            _solde = 0;
+
         }
 
-        public Compte(Proprietaire proprietaire, string iban, decimal solde) : this(proprietaire, iban)
+        public Compte(Proprietaire proprietaire, string iban, decimal solde)
         {
-            _solde = solde;
+            _solde = solde; 
+            _proprietaire = proprietaire;
+            _iban = iban;
         }
 
 
@@ -32,6 +36,11 @@ namespace BlockChain
         public void CrediterSolde(decimal amount)
         {
             //TODO
+        }
+
+        public override string ToString()
+        {
+            return $"{Proprietaire.ToString()};";
         }
     }
 }

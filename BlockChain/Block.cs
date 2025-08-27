@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BlockChain
 {
@@ -13,7 +10,13 @@ namespace BlockChain
         private Transaction _Transaction;
         private string _HashDuBlockPrecedent;
 
-        public Block(int id, Transaction transaction, string hashDuBlockPrecedent)
+        /// <summary>
+        /// Constructeur d'un block
+        /// </summary>
+        /// <param name="id">L'id du block</param>
+        /// <param name="transaction">La transaction éfféctuer</param>
+        /// <param name="hashDuBlockPrecedent">Le hash du block précédent</param>
+        private Block(int id, Transaction transaction, string hashDuBlockPrecedent)
         {
             _Id = id;
             _CreateTime = DateTime.Now;
@@ -21,14 +24,27 @@ namespace BlockChain
             _HashDuBlockPrecedent = hashDuBlockPrecedent;
         }
 
-        public Block(Transaction transaction, Block blockPrecedent)
+        /// <summary>
+        /// Création du block avec la transaction et le block précédent
+        /// </summary>
+        /// <param name="transaction">La transaction éfféctuer</param>
+        /// <param name="blockPrecedent">Le block précédent</param>
+        public Block(Transaction transaction, Block blockPrecedent): this (blockPrecedent.Id + 1, transaction, blockPrecedent.HashDuBlockActuelle)
         {
-            Id = blockPrecedent.Id + 1;
-            CreateTime = DateTime.Now;
-            Transaction = transaction;
-            _HashDuBlockPrecedent = blockPrecedent.HashDuBlockActuelle;
         }
 
+        /// <summary>
+        /// Constructeur pour crée le premier block
+        /// </summary>
+        /// <param name="transaction"></param>
+        public Block(Transaction transaction) : this(0, transaction, "0")
+        {
+            
+        }
+
+        /// <summary>
+        /// L'Id du block
+        /// </summary>
         public int Id { 
             get 
             { 
@@ -39,6 +55,9 @@ namespace BlockChain
                 _Id = value;
             }
         }
+        /// <summary>
+        /// La date et l'heure ou le block à été crée
+        /// </summary>
         public DateTime CreateTime 
         { 
             get 
@@ -50,6 +69,9 @@ namespace BlockChain
                 _CreateTime = value;
             }
         }
+        /// <summary>
+        /// La transaction du block actuelle
+        /// </summary>
         public Transaction Transaction { 
             get 
             { 
@@ -60,6 +82,9 @@ namespace BlockChain
                 _Transaction = value;
             }
         }
+        /// <summary>
+        /// Le hash du block précédent
+        /// </summary>
         public string HashDuBlockPrecedent {
             get 
             { 
@@ -71,11 +96,53 @@ namespace BlockChain
             }
         }
 
+        /// <summary>
+        /// Va crée un hash de l'instance actuelle
+        /// </summary>
         public string HashDuBlockActuelle { 
             get
             {
-                return "";
+                //on retourne directement le contenue de l'instance encoder
+                return Encode();
             }
+        }
+
+        /// <summary>
+        /// Format l'objet sur le format CSV
+        /// </summary>
+        /// <returns>
+        /// L'objet en CSV 
+        /// Id;TimeStamp;NomCréditeur;PrénomCréditeur;DateAniversaireCréditeur;IbanCréditeur;SoldeCréditeur;NomDébiteur;PrénomDébiteur;DateAniversaireDébiteur;IbanDébiteur;SoldeDébiteur;HashDuBlockPrécédent
+        /// </returns>
+        public override string ToString()
+        {
+            //on convertit au format CSV le block
+            return $"{Id};{GetTimestamp(CreateTime)};{Transaction};{HashDuBlockPrecedent}";
+        }
+
+        private string Encode()
+        {
+            //on déclare et initialize la classe SHA256
+            SHA256 sha256 = SHA256.Create();
+            //on récuper les octets qui servent à représenter la chaine de charactère avec le format UTF-8
+            byte[] inputBytes = Encoding.UTF8.GetBytes(ToString());
+            //on hash les octets avec l'algorithm sha256
+            byte[] hash = sha256.ComputeHash(inputBytes);
+            //on crée un StringBuilder afin de transformer la liste d'octet en une chaine de charactère
+            StringBuilder sb = new StringBuilder();
+            foreach (byte t in hash)
+            {
+                //Format le string en hexadecimal minuscule
+                sb.Append(t.ToString("x2"));
+            }
+            //on retourne le hash décoder en string
+            return sb.ToString();
+        }
+
+        //convertit la date en timestamp
+        private static string GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssffff");
         }
     }
 }

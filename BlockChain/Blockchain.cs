@@ -2,7 +2,7 @@
 {
     public class Blockchain
     {
-        public List<Block> blocks;
+        private List<Block> blocks;
 
         public Blockchain()
         {

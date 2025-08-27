@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="JsonFileManager">
+      <HintPath>..\..\..\ManualTranslationLibrary\ManualTranslationLibrary\bin\Debug\net8.0\JsonFileManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

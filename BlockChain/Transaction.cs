@@ -35,16 +35,18 @@ namespace BlockChain
         /// Return true ou false si le débit sur le compte débiteur est possible, puis modifie la valeur de l'attribut Status
         /// </summary>
         /// <returns></returns>
-        public bool Apply()
+        public void Apply()
         {
             if (Debiteur.DebiterSolde(Montant))
             {
                 Creancier.CrediterSolde(Montant);
                 Status = EStatusType.DONE;
-                return true;
             } 
-            Status = EStatusType.FAILED;
-            return false;
+            else
+            {
+                Status = EStatusType.FAILED;
+            }
+                
             
         }
 
